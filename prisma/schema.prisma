@@ -10,25 +10,82 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id          Int           @id @default(autoincrement())
-  username    String        @db.VarChar(30)
-  password    String        @db.VarChar(72)
-  email       String?
-  todos       Todo[]        
+  id       Int    @id @default(autoincrement())
+  role     Role   @default(USER)
+  name     String
+  lname    String
+  username String @unique
+  password String
+  email    String
+  address  String
+  List     List[]
 }
 
-model Todo {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(150)
-  status      Status        @default(pending)
-  duedate     DateTime      @db.Date
-  user_id     Int
-  user        User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model List {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    Int     @map("user_id")
+  trainer   Trainer @relation(fields: [trainerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  trainerId Int     @map("trainer_id")
+  more      More    @relation(fields: [moreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  moreId    Int     @map("more_id")
 }
 
-enum Status {
-  pending
-  doing
-  done
+model More {
+  id               Int                @id @default(autoincrement())
+  customized       String
+  getwell          String
+  yearly           String
+  List             List[]
+  Trainner_payment Trainner_payment[]
+}
+
+model Trainer {
+  id               Int                @id @default(autoincrement())
+  consult          Consult            @relation(fields: [consultId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  consultId        Int                @map("consult_id")
+  woman            String
+  man              String
+  ladyboy          String
+  List             List[]
+  Trainner_payment Trainner_payment[]
+}
+
+model Consult {
+  id      Int       @id @default(autoincrement())
+  expert  String
+  comment String
+  Trainer Trainer[]
+}
+
+model Trainner_payment {
+  id        Int     @id @default(autoincrement())
+  trainer   Trainer @relation(fields: [trainerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  trainerId Int     @map("trainer_id")
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  paymentId Int     @map("payment_id")
+  more      More    @relation(fields: [moreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  moreId    Int     @map("more_id")
+}
+
+model Payment {
+  id               Int                @id @default(autoincrement())
+  amount           String
+  date             DateTime
+  trainerdetails   String
+  Trainner_payment Trainner_payment[]
+  Order_Details    Order_Details[]
+}
+
+model Order_Details {
+  id         Int     @id @default(autoincrement())
+  payment    Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  paymentId  Int     @map("payment_id")
+  itemstatus String
 }

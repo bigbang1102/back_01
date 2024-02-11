@@ -1,29 +1,31 @@
-const bcrypt = require('bcryptjs')
-const {PrismaClient} = require('@prisma/client')
-const prisma = new PrismaClient()
+const bcrypt = require('bcryptjs');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-const password = bcrypt.hashSync('123456')
+
+const password = bcrypt.hashSync("123456");
+
 const userData = [
-  { username : 'andy', password, email: 'andy@ggg.mail' },
-  { username : 'bobby', password, email: 'bobby@ggg.mail' },
-  { username : 'candy', password, email: 'candy@ggg.mail' },
-]
-
-const todoData = [
-  { title:'Learn HTML', duedate: new Date(), user_id: 1 },
-  { title:'Learn CSS', duedate: new Date(), user_id: 1 },
-  { title:'Learn JS', duedate: new Date(), user_id: 2 },
-  { title:'Learn React', duedate: new Date(), user_id: 3 },
-
-]
+  {
+    name: "Andy",
+    lname: "Woodsum",
+    username: "bang",
+    password,
+    email: "pongpornbig@gmail.com",
+    address: ""
+  },
+];
 
 const run = async () => {
-  await prisma.user.createMany({
-    data : userData
-  })
-  await prisma.todo.createMany({
-    data : todoData
-  })
-}
+  try {
+    await prisma.user.createMany({
+      data: userData,
+    });
+  } catch (error) {
+    console.error("Error occurred:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
+};
 
-run()
+run();
