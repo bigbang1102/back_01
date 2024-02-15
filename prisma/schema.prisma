@@ -16,16 +16,16 @@ enum Role {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  role     Role      @default(USER)
+  id       Int     @id @default(autoincrement())
+  role     Role    @default(USER)
   name     String
   lname    String
-  username String    @unique
+  username String  @unique
   password String
   email    String
   address  String
   List     List[]
-  Consult  Consult[]
+  Claus    Claus[]
 }
 
 model List {
@@ -34,17 +34,21 @@ model List {
   userId    Int     @map("user_id")
   trainer   Trainer @relation(fields: [trainerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   trainerId Int     @map("trainer_id")
-  more      More    @relation(fields: [moreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  moreId    Int     @map("more_id")
+  claus     Claus   @relation(fields: [clausId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  clausId   Int     @map("more_id")
 }
 
-model More {
+model Claus {
   id               Int                @id @default(autoincrement())
-  customized       String
-  getwell          String
-  yearly           String
+  details          String
+  price            Float
+  quantity         String
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId           Int                @map("user_id")
   List             List[]
   Trainner_payment Trainner_payment[]
+
+  @@map("Claus")
 }
 
 model Trainer {
@@ -62,9 +66,9 @@ model Consult {
   id      Int       @id @default(autoincrement())
   expert  String
   comment String
-  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId  Int       @map("user_id")
   Trainer Trainer[]
+
+  @@map("Consult")
 }
 
 model Trainner_payment {
@@ -73,22 +77,23 @@ model Trainner_payment {
   trainerId Int     @map("trainer_id")
   payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   paymentId Int     @map("payment_id")
-  more      More    @relation(fields: [moreId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  moreId    Int     @map("more_id")
+  claus     Claus   @relation(fields: [clausId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  clausId   Int     @map("claus_id")
 }
 
 model Payment {
   id               Int                @id @default(autoincrement())
   amount           String
   date             DateTime
+  pay              Int
   trainerdetails   String
   Trainner_payment Trainner_payment[]
   Order_Details    Order_Details[]
 }
 
 model Order_Details {
-  id         Int     @id @default(autoincrement())
-  payment    Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  paymentId  Int     @map("payment_id")
-  itemstatus String
+  id        Int     @id @default(autoincrement())
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  paymentId Int     @map("payment_id")
+  amount    Int
 }
