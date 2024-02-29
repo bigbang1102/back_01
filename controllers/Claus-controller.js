@@ -1,18 +1,25 @@
 const db = require('../models/db')
-const { Status } = require('@prisma/client')
+
+exports.getClaus = async (req, res, next) => {
+  try {
+    const claus = await db.claus.findMany()
+    res.status(200).json(claus)
+  } catch (error) {
+    next(error)
+  }
+}
 
 exports.getByUser = async (req, res, next) => {
   try {
-    const Clau = await db.Claus.findMany({
+    const claust = await db.claus.findMany({
       where: { userId: req.user.id }
     })
-    res.json({ Clau })
+    res.json({ claust })
   } catch (err) {
     next(err)
   }
 }
-
-exports.createClaus = async (req, res, next) => {
+exports.createclaus = async (req, res, next) => {
   // validate req.body
   const data = req.body
   try {
@@ -26,30 +33,35 @@ exports.createClaus = async (req, res, next) => {
 }
 
 exports.updateClaus = async (req, res, next) => {
-  // validate req.params + req.body
-  const { id } = req.params
-  const data = req.body
   try {
-    const rs = await db.claus.update({
-      data: { ...data },
-      where: { id: +id, userId: req.user.id }
+    const claus = await db.claus.update({
+      where: {
+        id: req.params.id
+      },
+      data: {
+        details: req.body.details,
+        price: req.body.price,
+        quantity: req.body.quantity
+      }
     })
-    res.json({ msg: 'Update ok', result: rs })
-  } catch (err) {
-    next(err)
+    res.status(200).json(claus)
+  } catch (error) {
+    next(error)
   }
 }
 
 exports.deleteClaus = async (req, res, next) => {
-  const { id } = req.params
   try {
-    const rs = await db.claus.delete({ where: { id: +id, userId: req.user.id } })
-    res.json({ msg: 'Delete ok', result: rs })
-  } catch (err) {
-    next(err)
+    const claus = await db.claus.delete({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).json(claus)
+  } catch (error) {
+    next(error)
   }
 }
-
 exports.getAllStatus = async (req, res, next) => {
   res.json({ status: Object.values(Status) })
 }

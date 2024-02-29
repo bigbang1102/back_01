@@ -16,27 +16,22 @@ const userData = [
   },
 ];
 
-const consultData = [
-  { details: 'M3-23', price: '255', quantity: '10', userId: 1 },
-  { details: 'F1-10', price: '258', quantity: '10', userId: 2 },
-  { details: 'F8-11', price: '555', quantity: '10', userId: 2 },
+const todoData = [
+  { title: 'Learn HTML', dueDate: new Date(), userId: 1 },
+  { title: 'Learn CSS', dueDate: new Date(), userId: 1 },
+  { title: 'Learn JS', dueDate: new Date(), userId: 2 },
+  { title: 'Learn React', dueDate: new Date(), userId: 3 },
 
 ]
 
 const run = async () => {
-  try {
-    await prisma.user.createMany({
-      data: userData,
-    });
-    await prisma.consult.createMany({
-      data: consultData
-    })
+  await prisma.user.createMany({
+    data: userData
 
-  } catch (error) {
-    console.error("Error occurred:", error);
-  } finally {
-    await prisma.$disconnect();
-  }
-};
+  })
+  await prisma.todo.createMany({
+    data: todoData
+  })
+}
 
-run();
+run()

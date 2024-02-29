@@ -4,8 +4,8 @@ const cors = require('cors')
 const notFound = require('./middlewares/notFound')
 const errorMiddleware = require('./middlewares/error')
 const authRoute = require('./routes/auth-route')
+// const adminRoute = require('./routes/claus-route')
 const clausRoute = require('./routes/claus-route')
-
 
 const app = express()
 
@@ -14,7 +14,12 @@ app.use(express.json())
 
 // service
 app.use('/auth', authRoute)
+// app.use('/admin', adminRoute)
 app.use('/claus', clausRoute)
+app.use('/useronly', (_req, res, next) => {
+    res.json({ msg: 'Private area' })
+})
+
 
 // notFound
 app.use(notFound)

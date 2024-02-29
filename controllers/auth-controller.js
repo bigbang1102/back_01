@@ -53,6 +53,15 @@ exports.login = async (req, res, next) => {
       expiresIn: '30d'
     })
     console.log(token)
+
+    if (user.role === 'claus') {
+      console.log('HI CLAUS')
+    } else if (user.role === 'admin') {
+      console.log('HI ADMIN')
+    }
+
+
+
     res.json({ token: token })
   } catch (err) {
     next(err)

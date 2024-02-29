@@ -40,9 +40,9 @@ model List {
 
 model Claus {
   id               Int                @id @default(autoincrement())
-  details          String
+  details          String             @db.VarChar(200)
   price            Float
-  quantity         String
+  quantity         Int
   user             User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId           Int                @map("user_id")
   List             List[]
