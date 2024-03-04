@@ -41,14 +41,14 @@ model List {
 model Claus {
   id               Int                @id @default(autoincrement())
   details          String             @db.VarChar(200)
-  price            Float
-  quantity         Int
+  price            String             @db.VarChar(200)
+  quantity         String             @db.VarChar(200)
   user             User               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId           Int                @map("user_id")
   List             List[]
   Trainner_payment Trainner_payment[]
 
-  @@map("Claus")
+  @@map("claust")
 }
 
 model Trainer {
@@ -96,4 +96,10 @@ model Order_Details {
   payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   paymentId Int     @map("payment_id")
   amount    Int
+}
+
+enum Status {
+  PENDING
+  DOIHG
+  DONE
 }

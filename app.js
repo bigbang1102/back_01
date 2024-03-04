@@ -14,11 +14,10 @@ app.use(express.json())
 
 // service
 app.use('/auth', authRoute)
-// app.use('/admin', adminRoute)
 app.use('/claus', clausRoute)
-app.use('/useronly', (_req, res, next) => {
-    res.json({ msg: 'Private area' })
-})
+// app.use('/useronly', (req, res, next) => {
+//     res.json({ msg: 'Private area' })
+// })
 
 
 // notFound
@@ -26,6 +25,5 @@ app.use(notFound)
 
 // error
 app.use(errorMiddleware)
-
 let port = process.env.PORT || 8000
 app.listen(port, () => console.log('Server on Port :', port))

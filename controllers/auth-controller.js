@@ -54,11 +54,11 @@ exports.login = async (req, res, next) => {
     })
     console.log(token)
 
-    if (user.role === 'claus') {
-      console.log('HI CLAUS')
-    } else if (user.role === 'admin') {
-      console.log('HI ADMIN')
-    }
+    // if (user.role === 'claus') {
+    //   console.log('HI CLAUS')
+    // } else if (user.role === 'admin') {
+    //   console.log('HI ADMIN')
+    // }
 
 
 

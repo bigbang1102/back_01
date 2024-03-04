@@ -43,3 +43,19 @@ app.post('/api/products', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+// exports.createclaus = async (req, res, next) => {
+//     try {
+//       const claus = await db.claus.create({
+//         data: {
+//           details: JSON.parse(req.body.details),
+//           price: parseFloat(req.body.price),
+//           quantity: parseInt(req.body.quantity),
+//           userId: parseInt(req.body.userId),
+//         }
+//       });
+//       res.status(201).json(claus);
+//     } catch (error) {
+//       next(error);
+//     }
+  
+//   };
